@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 // Load environment variables FIRST before importing anything else
 dotenv.config();
 
-import express, { Application, Request, Response } from 'express';
+import express, { Application } from 'express';
 import { createServer } from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -31,8 +31,6 @@ socketManager.initialize(httpServer);
 
 // Middleware
 app.use(helmet());
-
-// ✅ Restored missing middleware
 app.use(compression());
 app.use(morgan('dev'));
 app.use(express.json({ limit: '10mb' }));
@@ -51,15 +49,15 @@ console.log('Allowed Origins:', allowedOrigins);
 
 app.use(
   cors({
-    origin: function (origin, callback) {
+    origin: (origin, callback) => {
       console.log('Incoming Origin:', origin);
 
-      // Allow requests with no origin
+      // Allow requests with no origin (Postman, server-to-server, etc.)
       if (!origin) {
         return callback(null, true);
       }
 
-      // Allow localhost
+      // Allow localhost during development
       if (origin.startsWith('http://localhost:')) {
         return callback(null, true);
       }
@@ -69,19 +67,12 @@ app.use(
         return callback(null, true);
       }
 
+      console.log('Blocked Origin:', origin);
       return callback(new Error('Not allowed by CORS'));
     },
     credentials: true,
   })
 );
-
-// Optional health check (keep if you were using Request/Response imports)
-app.get('/health', (req: Request, res: Response) => {
-  res.status(200).json({
-    status: 'OK',
-    message: 'Server is running',
-  });
-});
 
 // API Routes
 app.use('/api/algorithms', algorithmRoutes);
@@ -98,22 +89,22 @@ app.use(errorHandler);
 const startServer = async () => {
   try {
     await mongoose.connect(MONGODB_URI, {
-      serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+      serverSelectionTimeoutMS: 5000,
     });
 
     console.log('🍃 Connected to MongoDB');
     authService.setUseMongoDB(true);
   } catch (err) {
     console.warn(
-      '⚠️  MongoDB connection failed. Falling back to in-memory storage.'
+      '⚠️ MongoDB connection failed. Falling back to in-memory storage.'
     );
-    console.warn('⚠️  Data will NOT be persisted after restart.');
+    console.warn('⚠️ Data will NOT be persisted after restart.');
     authService.setUseMongoDB(false);
   }
 
   httpServer.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);
-    console.log(`📊 Algorithm Visualizer Backend Started`);
+    console.log('📊 Algorithm Visualizer Backend Started');
     console.log(
       `🔧 Environment: ${process.env.NODE_ENV || 'development'}`
     );
