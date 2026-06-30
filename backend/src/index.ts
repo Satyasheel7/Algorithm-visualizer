@@ -20,17 +20,23 @@ import authRoutes from './routes/auth.routes';
 import { authService } from './services/auth.service';
 import socketManager from './websocket/socketManager';
 
-
 const app: Application = express();
 const httpServer = createServer(app);
 const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/algo_visualizer';
+const MONGODB_URI =
+  process.env.MONGODB_URI || 'mongodb://localhost:27017/algo_visualizer';
 
 // Initialize WebSocket
 socketManager.initialize(httpServer);
 
 // Middleware
 app.use(helmet());
+
+// ✅ Restored missing middleware
+app.use(compression());
+app.use(morgan('dev'));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // CORS Configuration for Development and Production
 const allowedOrigins = [
@@ -39,41 +45,43 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
-console.log("==========================================");
-console.log("FRONTEND_URL ENV:", process.env.FRONTEND_URL);
-console.log("Allowed Origins:", allowedOrigins);
-console.log("==========================================");
+// Debug logs
+console.log('FRONTEND_URL:', process.env.FRONTEND_URL);
+console.log('Allowed Origins:', allowedOrigins);
 
-app.use(cors({
-  origin: function (origin, callback) {
-    console.log("------------------------------------------");
-    console.log("Incoming Origin:", origin);
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      console.log('Incoming Origin:', origin);
 
-    // Allow requests with no origin
-    if (!origin) {
-      console.log("✅ Allowed: No Origin");
-      return callback(null, true);
-    }
+      // Allow requests with no origin
+      if (!origin) {
+        return callback(null, true);
+      }
 
-    // Allow localhost
-    if (origin.startsWith("http://localhost:")) {
-      console.log("✅ Allowed: Localhost");
-      return callback(null, true);
-    }
+      // Allow localhost
+      if (origin.startsWith('http://localhost:')) {
+        return callback(null, true);
+      }
 
-    // Check allowed origins
-    if (allowedOrigins.includes(origin)) {
-      console.log("✅ Allowed:", origin);
-      return callback(null, true);
-    }
+      // Allow configured frontend
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
 
-    console.log("❌ Blocked:", origin);
-    console.log("Allowed Origins are:", allowedOrigins);
+      return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+  })
+);
 
-    callback(new Error("Not allowed by CORS"));
-  },
-  credentials: true
-}));
+// Optional health check (keep if you were using Request/Response imports)
+app.get('/health', (req: Request, res: Response) => {
+  res.status(200).json({
+    status: 'OK',
+    message: 'Server is running',
+  });
+});
 
 // API Routes
 app.use('/api/algorithms', algorithmRoutes);
@@ -90,12 +98,15 @@ app.use(errorHandler);
 const startServer = async () => {
   try {
     await mongoose.connect(MONGODB_URI, {
-      serverSelectionTimeoutMS: 5000 // Timeout after 5s instead of 30s
+      serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
     });
+
     console.log('🍃 Connected to MongoDB');
     authService.setUseMongoDB(true);
   } catch (err) {
-    console.warn('⚠️  MongoDB connection failed. Falling back to in-memory storage.');
+    console.warn(
+      '⚠️  MongoDB connection failed. Falling back to in-memory storage.'
+    );
     console.warn('⚠️  Data will NOT be persisted after restart.');
     authService.setUseMongoDB(false);
   }
@@ -103,7 +114,9 @@ const startServer = async () => {
   httpServer.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);
     console.log(`📊 Algorithm Visualizer Backend Started`);
-    console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(
+      `🔧 Environment: ${process.env.NODE_ENV || 'development'}`
+    );
   });
 };
 
