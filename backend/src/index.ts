@@ -52,28 +52,28 @@ console.log('Allowed Origins:', allowedOrigins);
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      console.log('Incoming Origin:', origin);
+    origin: (_origin, callback) => {
+      console.log('Incoming Origin:', _origin);
 
       // Allow requests with no origin (Postman, server-to-server, etc.)
-      if (!origin) {
+      if (!_origin) {
         return callback(null, true);
       }
 
       // Allow localhost during development
-      if (origin.startsWith('http://localhost:')) {
+      if (_origin.startsWith('http://localhost:')) {
         return callback(null, true);
       }
 
       // Remove trailing slash from origin for comparison
-      const normalizedOrigin = origin.replace(/\/$/, '');
+      const normalizedOrigin = _origin.replace(/\/$/, '');
 
       // Allow configured frontend
-      if (allowedOrigins.includes(normalizedOrigin) || allowedOrigins.includes(origin)) {
+      if (allowedOrigins.includes(normalizedOrigin) || allowedOrigins.includes(_origin)) {
         return callback(null, true);
       }
 
-      console.log('Blocked Origin:', origin);
+      console.log('Blocked Origin:', _origin);
       return callback(new Error('Not allowed by CORS'));
     },
     credentials: true,
@@ -91,7 +91,7 @@ app.use('/api/playground', playgroundRoutes);
 app.use('/api/auth', authRoutes);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
 });
 
