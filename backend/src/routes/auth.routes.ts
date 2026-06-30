@@ -5,7 +5,7 @@ import { verifyToken } from '../middleware/authMiddleware';
 const router = Router();
 
 // CORS preflight handling
-router.options('*', (_req, res) => {
+router.options('/*splat', (_req, res) => {
   res.header('Access-Control-Allow-Origin', _req.headers.origin || '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
