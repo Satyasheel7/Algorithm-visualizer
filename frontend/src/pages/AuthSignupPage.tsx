@@ -20,7 +20,6 @@ export const SignupPage: React.FC = () => {
   const [localError, setLocalError] = useState('');
   const [passwordStrength, setPasswordStrength] = useState(0);
 
-  // Password strength validator
   const calculatePasswordStrength = (pass: string) => {
     let strength = 0;
     if (pass.length >= 6) strength++;
@@ -42,7 +41,6 @@ export const SignupPage: React.FC = () => {
     setLocalError('');
     clearError();
 
-    // Validation
     if (!username.trim()) {
       setLocalError('Username is required');
       return;
@@ -89,7 +87,6 @@ export const SignupPage: React.FC = () => {
     }
   };
 
-  // Load Google OAuth script
   useEffect(() => {
     if (!GOOGLE_CLIENT_ID) {
       console.error('VITE_GOOGLE_CLIENT_ID is not set in environment variables');
@@ -115,7 +112,6 @@ export const SignupPage: React.FC = () => {
         });
         console.log('Google OAuth initialized');
 
-        // Render the Google button directly to avoid FedCM popup issues
         setTimeout(() => {
           const googleButtonDiv = document.getElementById('google-signup-button');
           if (googleButtonDiv && window.google) {
@@ -151,7 +147,6 @@ export const SignupPage: React.FC = () => {
       setIsLoading(true);
       console.log('Google response received:', response);
 
-      // Send the Google credential to your backend
       const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -162,11 +157,10 @@ export const SignupPage: React.FC = () => {
       console.log('Backend response:', data);
 
       if (res.ok && data.status === 'success') {
-        // Store the tokens with correct keys that authService expects
         localStorage.setItem('accessToken', data.token);
         localStorage.setItem('refreshToken', data.refreshToken);
         toast.success('Signed up with Google successfully!');
-        window.location.href = '/'; // Force reload to update auth state
+        window.location.href = '/';
       } else {
         setLocalError(data.error || 'Google signup failed');
         toast.error(data.error || 'Google signup failed');
@@ -180,8 +174,6 @@ export const SignupPage: React.FC = () => {
       setIsLoading(false);
     }
   };
-
-
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -200,17 +192,16 @@ export const SignupPage: React.FC = () => {
     { label: 'Very Weak', color: 'bg-red-500' },
     { label: 'Weak', color: 'bg-orange-500' },
     { label: 'Fair', color: 'bg-yellow-500' },
-    { label: 'Good', color: 'bg-blue-500' },
-    { label: 'Strong', color: 'bg-green-500' },
+    { label: 'Good', color: 'bg-teal-500' },
+    { label: 'Strong', color: 'bg-emerald-500' },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-      {/* Background decorative elements */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-teal-950 to-amber-950 flex items-center justify-center p-4">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-amber-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
       </div>
 
       <motion.div
@@ -219,18 +210,15 @@ export const SignupPage: React.FC = () => {
         initial="hidden"
         animate="visible"
       >
-        {/* Card */}
         <motion.div
           className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl p-8"
           variants={itemVariants}
         >
-          {/* Header */}
           <motion.div className="text-center mb-8" variants={itemVariants}>
             <h1 className="text-4xl font-bold text-white mb-2">Create Account</h1>
             <p className="text-gray-300">Join us to start visualizing algorithms</p>
           </motion.div>
 
-          {/* Error Message */}
           {(localError || error) && (
             <motion.div
               className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg flex items-start gap-3"
@@ -242,9 +230,7 @@ export const SignupPage: React.FC = () => {
             </motion.div>
           )}
 
-          {/* Form */}
           <form onSubmit={handleSignup} className="space-y-5">
-            {/* Username Field */}
             <motion.div variants={itemVariants}>
               <label className="block text-white text-sm font-medium mb-2">Username</label>
               <div className="relative">
@@ -254,12 +240,11 @@ export const SignupPage: React.FC = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Choose a username"
-                  className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-white/20 transition-all duration-300"
+                  className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-500 focus:bg-white/20 transition-all duration-300"
                 />
               </div>
             </motion.div>
 
-            {/* Email Field */}
             <motion.div variants={itemVariants}>
               <label className="block text-white text-sm font-medium mb-2">Email</label>
               <div className="relative">
@@ -269,12 +254,11 @@ export const SignupPage: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-white/20 transition-all duration-300"
+                  className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-500 focus:bg-white/20 transition-all duration-300"
                 />
               </div>
             </motion.div>
 
-            {/* Password Field */}
             <motion.div variants={itemVariants}>
               <label className="block text-white text-sm font-medium mb-2">Password</label>
               <div className="relative">
@@ -284,7 +268,7 @@ export const SignupPage: React.FC = () => {
                   value={password}
                   onChange={handlePasswordChange}
                   placeholder="Create a password"
-                  className="w-full pl-12 pr-12 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-white/20 transition-all duration-300"
+                  className="w-full pl-12 pr-12 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-500 focus:bg-white/20 transition-all duration-300"
                 />
                 <button
                   type="button"
@@ -294,7 +278,6 @@ export const SignupPage: React.FC = () => {
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
-              {/* Password Strength Indicator */}
               {password && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-2">
                   <div className="flex gap-1 mb-1">
@@ -310,13 +293,12 @@ export const SignupPage: React.FC = () => {
                     ))}
                   </div>
                   <p className="text-xs text-gray-300">
-                    Password strength: <span className="text-purple-300 font-medium">{passwordStrengthConfig[Math.max(0, passwordStrength - 1)]?.label}</span>
+                    Password strength: <span className="text-teal-300 font-medium">{passwordStrengthConfig[Math.max(0, passwordStrength - 1)]?.label}</span>
                   </p>
                 </motion.div>
               )}
             </motion.div>
 
-            {/* Confirm Password Field */}
             <motion.div variants={itemVariants}>
               <label className="block text-white text-sm font-medium mb-2">Confirm Password</label>
               <div className="relative">
@@ -326,7 +308,7 @@ export const SignupPage: React.FC = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm your password"
-                  className="w-full pl-12 pr-12 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-white/20 transition-all duration-300"
+                  className="w-full pl-12 pr-12 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-500 focus:bg-white/20 transition-all duration-300"
                 />
                 <button
                   type="button"
@@ -336,7 +318,6 @@ export const SignupPage: React.FC = () => {
                   {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
-              {/* Password Match Indicator */}
               {confirmPassword && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-2 flex items-center gap-2">
                   {password === confirmPassword ? (
@@ -354,14 +335,13 @@ export const SignupPage: React.FC = () => {
               )}
             </motion.div>
 
-            {/* Sign Up Button */}
             <motion.button
               type="submit"
               disabled={isLoading}
               variants={itemVariants}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+              className="w-full bg-gradient-to-r from-teal-600 to-amber-500 hover:from-teal-700 hover:to-amber-600 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
             >
               {isLoading ? (
                 <>
@@ -377,31 +357,23 @@ export const SignupPage: React.FC = () => {
             </motion.button>
           </form>
 
-          {/* Divider */}
           <motion.div className="my-6 flex items-center" variants={itemVariants}>
             <div className="flex-1 h-px bg-white/20"></div>
             <span className="px-3 text-gray-400 text-sm">or sign up with</span>
             <div className="flex-1 h-px bg-white/20"></div>
           </motion.div>
 
-          {/* Google Sign Up Button */}
-          <motion.div
-            variants={itemVariants}
-            className="w-full"
-          >
+          <motion.div variants={itemVariants} className="w-full">
             <div
               id="google-signup-button"
               className="w-full flex justify-center"
               style={{ minHeight: '44px' }}
-            >
-              {/* Google will render its button here */}
-            </div>
+            />
           </motion.div>
 
-          {/* Login Link */}
           <motion.p className="text-center mt-6 text-gray-300" variants={itemVariants}>
             Already have an account?{' '}
-            <Link to="/login" className="text-purple-400 hover:text-purple-300 font-semibold transition-colors">
+            <Link to="/login" className="text-teal-300 hover:text-amber-300 font-semibold transition-colors">
               Sign in here
             </Link>
           </motion.p>
@@ -427,19 +399,5 @@ export const SignupPage: React.FC = () => {
     </div>
   );
 };
-
-// TypeScript declaration for Google Identity Services
-declare global {
-  interface Window {
-    google?: {
-      accounts: {
-        id: {
-          initialize: (config: any) => void;
-          prompt: () => void;
-        };
-      };
-    };
-  }
-}
 
 export default SignupPage;

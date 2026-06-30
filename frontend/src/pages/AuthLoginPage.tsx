@@ -16,7 +16,6 @@ export const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [localError, setLocalError] = useState('');
 
-  // Load Google OAuth script
   useEffect(() => {
     if (!GOOGLE_CLIENT_ID) {
       console.error('VITE_GOOGLE_CLIENT_ID is not set in environment variables');
@@ -42,7 +41,6 @@ export const LoginPage: React.FC = () => {
         });
         console.log('Google OAuth initialized');
 
-        // Render the Google button directly to avoid FedCM popup issues
         setTimeout(() => {
           const googleButtonDiv = document.getElementById('google-signin-button');
           if (googleButtonDiv && window.google) {
@@ -78,7 +76,6 @@ export const LoginPage: React.FC = () => {
       setIsLoading(true);
       console.log('Google response received:', response);
 
-      // Send the Google credential to your backend
       const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -89,11 +86,10 @@ export const LoginPage: React.FC = () => {
       console.log('Backend response:', data);
 
       if (res.ok && data.status === 'success') {
-        // Store the tokens with correct keys that authService expects
         localStorage.setItem('accessToken', data.token);
         localStorage.setItem('refreshToken', data.refreshToken);
         toast.success('Logged in with Google successfully!');
-        window.location.href = '/'; // Force reload to update auth state
+        window.location.href = '/';
       } else {
         setLocalError(data.error || 'Google login failed');
         toast.error(data.error || 'Google login failed');
@@ -118,7 +114,6 @@ export const LoginPage: React.FC = () => {
       return;
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setLocalError('Please enter a valid email address (e.g., user@gmail.com)');
@@ -141,8 +136,6 @@ export const LoginPage: React.FC = () => {
     }
   };
 
-
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -157,12 +150,11 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-      {/* Background decorative elements */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-teal-950 to-amber-950 flex items-center justify-center p-4">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-amber-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
       </div>
 
       <motion.div
@@ -171,18 +163,15 @@ export const LoginPage: React.FC = () => {
         initial="hidden"
         animate="visible"
       >
-        {/* Card */}
         <motion.div
           className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl p-8"
           variants={itemVariants}
         >
-          {/* Header */}
           <motion.div className="text-center mb-8" variants={itemVariants}>
             <h1 className="text-4xl font-bold text-white mb-2">Welcome Back</h1>
             <p className="text-gray-300">Sign in to your account to continue</p>
           </motion.div>
 
-          {/* Error Message */}
           {(localError || error) && (
             <motion.div
               className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg"
@@ -193,9 +182,7 @@ export const LoginPage: React.FC = () => {
             </motion.div>
           )}
 
-          {/* Form */}
           <form onSubmit={handleLogin} className="space-y-6">
-            {/* Email Field */}
             <motion.div variants={itemVariants}>
               <label className="block text-white text-sm font-medium mb-2">Email</label>
               <div className="relative">
@@ -205,12 +192,11 @@ export const LoginPage: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email (e.g., user@gmail.com)"
-                  className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-white/20 transition-all duration-300"
+                  className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-500 focus:bg-white/20 transition-all duration-300"
                 />
               </div>
             </motion.div>
 
-            {/* Password Field */}
             <motion.div variants={itemVariants}>
               <label className="block text-white text-sm font-medium mb-2">Password</label>
               <div className="relative">
@@ -220,7 +206,7 @@ export const LoginPage: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="w-full pl-12 pr-12 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-white/20 transition-all duration-300"
+                  className="w-full pl-12 pr-12 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-500 focus:bg-white/20 transition-all duration-300"
                 />
                 <button
                   type="button"
@@ -232,14 +218,13 @@ export const LoginPage: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Login Button */}
             <motion.button
               type="submit"
               disabled={isLoading}
               variants={itemVariants}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-teal-600 to-amber-500 hover:from-teal-700 hover:to-amber-600 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <>
@@ -255,31 +240,23 @@ export const LoginPage: React.FC = () => {
             </motion.button>
           </form>
 
-          {/* Divider */}
           <motion.div className="my-6 flex items-center" variants={itemVariants}>
             <div className="flex-1 h-px bg-white/20"></div>
             <span className="px-3 text-gray-400 text-sm">or continue with</span>
             <div className="flex-1 h-px bg-white/20"></div>
           </motion.div>
 
-          {/* Google Login Button */}
-          <motion.div
-            variants={itemVariants}
-            className="w-full"
-          >
+          <motion.div variants={itemVariants} className="w-full">
             <div
               id="google-signin-button"
               className="w-full flex justify-center"
               style={{ minHeight: '44px' }}
-            >
-              {/* Google will render its button here */}
-            </div>
+            />
           </motion.div>
 
-          {/* Sign Up Link */}
           <motion.p className="text-center mt-6 text-gray-300" variants={itemVariants}>
             Don't have an account?{' '}
-            <Link to="/signup" className="text-purple-400 hover:text-purple-300 font-semibold transition-colors">
+            <Link to="/signup" className="text-teal-300 hover:text-amber-300 font-semibold transition-colors">
               Sign up here
             </Link>
           </motion.p>
@@ -306,7 +283,6 @@ export const LoginPage: React.FC = () => {
   );
 };
 
-// TypeScript declaration for Google Identity Services
 declare global {
   interface Window {
     google?: {

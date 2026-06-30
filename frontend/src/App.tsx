@@ -51,7 +51,7 @@ function App() {
 
   return (
     <AuthProvider>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(20,184,166,0.12),_transparent_35%),linear-gradient(135deg,_#f8fafc_0%,_#ecfeff_48%,_#fefce8_100%)] dark:bg-[radial-gradient(circle_at_top,_rgba(15,23,42,0.95),_rgba(2,6,23,1)_68%)]">
         <SimpleHeader />
         <main className="animate-fade-in">
           <Routes>

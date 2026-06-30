@@ -22,7 +22,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 h-16">
+    <header className="bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-gray-200/70 dark:border-gray-700 h-16">
       <div className="flex items-center justify-between h-full px-4">
         <div className="flex items-center">
           <button
@@ -33,8 +33,8 @@ const Header = () => {
           </button>
           
           <Link to="/" className="ml-4 flex items-center">
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-              Algorithm Visualizer
+            <h1 className="text-xl font-bold text-gradient">
+              AlgoForge
             </h1>
           </Link>
         </div>
@@ -52,7 +52,7 @@ const Header = () => {
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center space-x-2 p-2 rounded-md text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
-                <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
+                <div className="h-8 w-8 rounded-full bg-gradient-to-r from-teal-600 to-amber-500 flex items-center justify-center text-white text-sm font-bold">
                   {user?.username?.charAt(0).toUpperCase() || 'U'}
                 </div>
               </button>
@@ -96,7 +96,7 @@ const Header = () => {
               </Link>
               <Link
                 to="/register"
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-teal-600 to-amber-500 rounded-md hover:from-teal-700 hover:to-amber-600"
               >
                 Sign Up
               </Link>

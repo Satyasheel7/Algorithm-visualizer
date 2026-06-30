@@ -37,11 +37,11 @@ const HomePage = () => {
   ];
 
   const algorithmCategories = [
-    { name: 'Sorting', count: 8, color: 'bg-blue-500' },
-    { name: 'Searching', count: 5, color: 'bg-green-500' },
-    { name: 'Graph', count: 10, color: 'bg-purple-500' },
-    { name: 'Dynamic Programming', count: 12, color: 'bg-orange-500' },
-    { name: 'Tree', count: 7, color: 'bg-pink-500' },
+    { name: 'Sorting', count: 8, color: 'bg-teal-500' },
+    { name: 'Searching', count: 5, color: 'bg-emerald-500' },
+    { name: 'Graph', count: 10, color: 'bg-cyan-500' },
+    { name: 'Dynamic Programming', count: 12, color: 'bg-amber-500' },
+    { name: 'Tree', count: 7, color: 'bg-orange-500' },
   ];
 
   return (
@@ -56,7 +56,7 @@ const HomePage = () => {
         >
           <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">
             Master Algorithms Through
-            <span className="text-blue-600 dark:text-blue-400"> Interactive Visualization</span>
+            <span className="text-teal-600 dark:text-teal-400"> Interactive Visualization</span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
             Learn, visualize, and implement algorithms with our comprehensive platform
@@ -64,14 +64,14 @@ const HomePage = () => {
           <div className="flex gap-4 justify-center">
             <Link
               to="/algorithms"
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+              className="px-6 py-3 bg-gradient-to-r from-teal-600 to-amber-500 text-white rounded-lg hover:from-teal-700 hover:to-amber-600 transition-colors flex items-center gap-2"
             >
               <Play className="h-5 w-5" />
               Start Visualizing
             </Link>
             <Link
               to="/playground"
-              className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center gap-2"
+              className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-teal-50 dark:hover:bg-slate-800 transition-colors flex items-center gap-2"
             >
               <Code className="h-5 w-5" />
               Code Playground
@@ -89,7 +89,7 @@ const HomePage = () => {
             transition={{ delay: 0.2 }}
             className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12"
           >
-            Why Choose AlgoVisualizer?
+            Why Choose AlgoForge?
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
@@ -100,7 +100,7 @@ const HomePage = () => {
                 transition={{ delay: 0.1 * index }}
                 className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
               >
-                <feature.icon className="h-12 w-12 text-blue-600 dark:text-blue-400 mb-4" />
+                <feature.icon className="h-12 w-12 text-teal-600 dark:text-teal-400 mb-4" />
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                   {feature.title}
                 </h3>
@@ -166,7 +166,7 @@ const HomePage = () => {
           </p>
           <Link
             to="/register"
-            className="inline-block px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+            className="inline-block px-8 py-4 bg-white text-teal-700 rounded-lg font-semibold hover:bg-amber-50 transition-colors"
           >
             Get Started for Free
           </Link>

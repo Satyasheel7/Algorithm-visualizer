@@ -21,7 +21,7 @@ const SimpleHomePage = () => {
       ),
       title: 'Interactive Visualizations',
       description: 'Step through algorithms with real-time controls and animations',
-      color: 'from-blue-500 to-cyan-500'
+      color: 'from-teal-500 to-cyan-400'
     },
     {
       icon: (
@@ -31,7 +31,7 @@ const SimpleHomePage = () => {
       ),
       title: 'Performance Metrics',
       description: 'See time and space complexity analysis in real-time',
-      color: 'from-purple-500 to-pink-500'
+      color: 'from-amber-500 to-orange-500'
     },
     {
       icon: (
@@ -41,7 +41,7 @@ const SimpleHomePage = () => {
       ),
       title: 'Comprehensive Learning',
       description: 'Learn with detailed explanations and step-by-step tutorials',
-      color: 'from-green-500 to-teal-500'
+      color: 'from-emerald-500 to-lime-500'
     },
     {
       icon: (
@@ -51,7 +51,7 @@ const SimpleHomePage = () => {
       ),
       title: 'Code Playground',
       description: 'Write, test, and visualize your own implementations with AI-powered code fixing',
-      color: 'from-orange-500 to-red-500'
+      color: 'from-slate-700 to-teal-600'
     }
   ];
 
@@ -63,22 +63,22 @@ const SimpleHomePage = () => {
           <div className="text-center max-w-5xl mx-auto">
             {/* Animated Background Elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float"></div>
-              <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float" style={{ animationDelay: '2s' }}></div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float" style={{ animationDelay: '4s' }}></div>
+              <div className="absolute -top-40 -right-40 w-80 h-80 bg-teal-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float"></div>
+              <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-amber-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float" style={{ animationDelay: '2s' }}></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-cyan-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float" style={{ animationDelay: '4s' }}></div>
             </div>
 
             {/* Main Content */}
             <div className="relative z-10">
               <h1 className="text-5xl lg:text-7xl font-bold mb-6">
-                <span className="text-gradient">Master Algorithms</span>
+                <span className="text-gradient">Build Algorithms</span>
                 <br />
-                <span className="text-gray-800 dark:text-white">Through Visualization</span>
+                <span className="text-gray-800 dark:text-white">Through Motion</span>
               </h1>
 
               <p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-                Experience algorithms come to life with interactive visualizations,
-                real-time animations, and comprehensive explanations.
+                Experience algorithms with interactive visualizations,
+                real-time motion, and focused explanations.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -130,7 +130,7 @@ const SimpleHomePage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">
-              <span className="text-gradient">Why Choose AlgoViz?</span>
+              <span className="text-gradient">Why Choose AlgoForge?</span>
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Everything you need to master algorithms and data structures
@@ -228,11 +228,11 @@ const SimpleHomePage = () => {
 
       {/* CTA Section */}
       <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-90"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-teal-700 via-cyan-600 to-amber-500 opacity-90"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
             <h2 className="text-4xl font-bold text-white mb-6">
-              Ready to Master Algorithms?
+              Ready to Build Better Algorithms?
             </h2>
             <p className="text-xl text-white/90 mb-8">
               Start your journey today with our interactive visualizations and comprehensive tutorials.

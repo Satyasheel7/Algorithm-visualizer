@@ -41,7 +41,7 @@ const SimpleHeader = () => {
   return (
     <header className={`sticky top-0 z-50 transition-all duration-300 ${
       isScrolled
-        ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg shadow-lg'
+        ? 'bg-white/85 dark:bg-slate-950/80 backdrop-blur-lg shadow-lg'
         : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-4">
@@ -49,8 +49,8 @@ const SimpleHeader = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl blur-lg opacity-75 group-hover:opacity-100 transition-opacity"></div>
-              <div className="relative w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform">
+              <div className="absolute inset-0 bg-gradient-to-r from-teal-600 to-amber-500 rounded-xl blur-lg opacity-75 group-hover:opacity-100 transition-opacity"></div>
+              <div className="relative w-12 h-12 bg-gradient-to-r from-teal-600 to-amber-500 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform">
                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
@@ -58,9 +58,9 @@ const SimpleHeader = () => {
             </div>
             <div>
               <span className="text-2xl font-bold text-gradient">
-                AlgoViz
+                AlgoForge
               </span>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Algorithm Visualizer</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Interactive Algorithm Studio</p>
             </div>
           </Link>
 
@@ -103,7 +103,7 @@ const SimpleHeader = () => {
             {isAuthenticated && user ? (
               <div className="hidden md:flex items-center space-x-3 pl-4 border-l border-gray-200 dark:border-gray-700">
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-teal-600 to-amber-500 rounded-full flex items-center justify-center">
                     <User className="w-5 h-5 text-white" />
                   </div>
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -177,7 +177,7 @@ const SimpleHeader = () => {
               {isAuthenticated && user ? (
                 <div className="space-y-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                   <div className="flex items-center space-x-2 px-2">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gradient-to-r from-teal-600 to-amber-500 rounded-full flex items-center justify-center">
                       <User className="w-5 h-5 text-white" />
                     </div>
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
