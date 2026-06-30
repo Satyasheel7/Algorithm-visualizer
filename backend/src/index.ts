@@ -37,54 +37,43 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   process.env.FRONTEND_URL,
-].filter(Boolean); // Remove undefined values
+].filter(Boolean);
+
+console.log("==========================================");
+console.log("FRONTEND_URL ENV:", process.env.FRONTEND_URL);
+console.log("Allowed Origins:", allowedOrigins);
+console.log("==========================================");
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl)
+    console.log("------------------------------------------");
+    console.log("Incoming Origin:", origin);
+
+    // Allow requests with no origin
     if (!origin) {
+      console.log("✅ Allowed: No Origin");
       return callback(null, true);
     }
 
-    // Allow localhost in development
-    if (origin.startsWith('http://localhost:')) {
+    // Allow localhost
+    if (origin.startsWith("http://localhost:")) {
+      console.log("✅ Allowed: Localhost");
       return callback(null, true);
     }
 
-    // Check against allowed origins
+    // Check allowed origins
     if (allowedOrigins.includes(origin)) {
+      console.log("✅ Allowed:", origin);
       return callback(null, true);
     }
 
-    callback(new Error('Not allowed by CORS'));
+    console.log("❌ Blocked:", origin);
+    console.log("Allowed Origins are:", allowedOrigins);
+
+    callback(new Error("Not allowed by CORS"));
   },
   credentials: true
 }));
-app.use(compression());
-app.use(morgan('dev'));
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
-// Health check endpoints (both root and /api for flexibility)
-app.get('/health', (_req: Request, res: Response) => {
-  res.json({
-    status: 'ok',
-    message: 'API is running',
-    timestamp: new Date().toISOString(),
-    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-    environment: process.env.NODE_ENV || 'development'
-  });
-});
-
-app.get('/api/health', (_req: Request, res: Response) => {
-  res.json({
-    status: 'ok',
-    message: 'API is running',
-    timestamp: new Date().toISOString(),
-    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-    environment: process.env.NODE_ENV || 'development'
-  });
-});
 
 // API Routes
 app.use('/api/algorithms', algorithmRoutes);
