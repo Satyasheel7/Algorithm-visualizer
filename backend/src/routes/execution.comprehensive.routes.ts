@@ -3,10 +3,12 @@ import { comprehensiveExecutionService } from '../services/execution.comprehensi
 
 const router = Router();
 
+// Specific routes MUST come before dynamic :id routes
+
 // Execute an algorithm with given input
-router.post('/algorithm', async (req: Request, res: Response): Promise<void> => {
+router.post('/algorithm', async (_req: Request, res: Response): Promise<void> => {
   try {
-    const { algorithmId, input, options } = req.body;
+    const { algorithmId, input, options } = _req.body;
 
     if (!algorithmId) {
       res.status(400).json({ error: 'Algorithm ID is required' });
@@ -35,10 +37,41 @@ router.post('/algorithm', async (req: Request, res: Response): Promise<void> => 
   }
 });
 
-// Get execution status
-router.get('/status/:id', async (req: Request, res: Response): Promise<void> => {
+// Validate input for an algorithm (BEFORE /status/:id and /sample-input/:algorithmId)
+router.post('/validate', async (_req: Request, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const { algorithmId, input } = _req.body;
+
+    if (!algorithmId) {
+      res.status(400).json({ error: 'Algorithm ID is required' });
+      return;
+    }
+
+    const validation = comprehensiveExecutionService.validateInput(algorithmId, input);
+    res.json(validation);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Generate sample input for an algorithm (BEFORE /:id dynamic routes)
+router.get('/sample-input/:algorithmId', async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const { algorithmId } = _req.params;
+    const sampleInput = comprehensiveExecutionService.generateSampleInput(algorithmId);
+    
+    res.json({ algorithmId, input: sampleInput });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Dynamic param routes come LAST
+
+// Get execution status
+router.get('/status/:id', async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = _req.params;
     const result = await comprehensiveExecutionService.getExecutionStatus(id);
 
     if (!result) {
@@ -53,9 +86,9 @@ router.get('/status/:id', async (req: Request, res: Response): Promise<void> => 
 });
 
 // Cancel execution
-router.delete('/cancel/:id', async (req: Request, res: Response): Promise<void> => {
+router.delete('/cancel/:id', async (_req: Request, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const { id } = _req.params;
     const success = await comprehensiveExecutionService.cancelExecution(id);
 
     if (!success) {
@@ -64,35 +97,6 @@ router.delete('/cancel/:id', async (req: Request, res: Response): Promise<void> 
     }
 
     res.json({ message: 'Execution cancelled' });
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Generate sample input for an algorithm
-router.get('/sample-input/:algorithmId', async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { algorithmId } = req.params;
-    const sampleInput = comprehensiveExecutionService.generateSampleInput(algorithmId);
-    
-    res.json({ algorithmId, input: sampleInput });
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Validate input for an algorithm
-router.post('/validate', async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { algorithmId, input } = req.body;
-
-    if (!algorithmId) {
-      res.status(400).json({ error: 'Algorithm ID is required' });
-      return;
-    }
-
-    const validation = comprehensiveExecutionService.validateInput(algorithmId, input);
-    res.json(validation);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

@@ -85,7 +85,7 @@ app.use(
 // API Routes
 app.use('/api/algorithms', algorithmRoutes);
 app.use('/api/execute', executionRoutes);
-app.use('/api/execute', comprehensiveExecutionRoutes);
+app.use('/api/comprehensive', comprehensiveExecutionRoutes); // Changed from /api/execute to avoid conflicts
 app.use('/api/visualize', visualizationRoutes);
 app.use('/api/playground', playgroundRoutes);
 app.use('/api/auth', authRoutes);
