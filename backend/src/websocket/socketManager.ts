@@ -14,24 +14,45 @@ class SocketManager {
   private rooms: Map<string, VisualizationRoom> = new Map();
 
   initialize(server: HTTPServer) {
-    // Normalize FRONTEND_URL and build allowed origins
-    const frontendUrl = process.env.FRONTEND_URL?.replace(/\/$/, '') || 'http://localhost:5173';
-    const allowedOrigins = [
-      'http://localhost:5173',
-      'http://localhost:3000',
-      frontendUrl,
-    ].filter(Boolean) as string[];
+    try {
+      // Normalize and validate FRONTEND_URL
+      let frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+      
+      // Remove trailing slash and validate URL format
+      frontendUrl = frontendUrl.replace(/\/$/, '');
+      
+      // Only allow valid URLs (must start with http or https)
+      if (!frontendUrl.startsWith('http://') && !frontendUrl.startsWith('https://')) {
+        console.warn('⚠️ Invalid FRONTEND_URL format, using default');
+        frontendUrl = 'http://localhost:5173';
+      }
 
-    this.io = new SocketIOServer(server, {
-      cors: {
-        origin: allowedOrigins,
-        methods: ['GET', 'POST'],
-        credentials: true,
-      },
-    });
+      const allowedOrigins = [
+        'http://localhost:5173',
+        'http://localhost:3000',
+        frontendUrl,
+      ].filter((origin): origin is string => {
+        // Validate each origin
+        return !!origin && (origin.startsWith('http://') || origin.startsWith('https://'));
+      });
 
-    this.setupEventHandlers();
-    console.log('🔌 WebSocket server initialized');
+      console.log('🔌 Initializing WebSocket with origins:', allowedOrigins);
+
+      this.io = new SocketIOServer(server, {
+        cors: {
+          origin: allowedOrigins,
+          methods: ['GET', 'POST'],
+          credentials: true,
+        },
+        transports: ['websocket', 'polling'],
+      });
+
+      this.setupEventHandlers();
+      console.log('🔌 WebSocket server initialized successfully');
+    } catch (error) {
+      console.error('❌ Error initializing WebSocket:', error);
+      this.io = null;
+    }
   }
 
   private setupEventHandlers() {

@@ -26,9 +26,6 @@ const PORT = process.env.PORT || 5000;
 const MONGODB_URI =
   process.env.MONGODB_URI || 'mongodb://localhost:27017/algo_visualizer';
 
-// Initialize WebSocket
-socketManager.initialize(httpServer);
-
 // Middleware
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
@@ -39,12 +36,15 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // CORS Configuration for Development and Production
-const frontendUrl = process.env.FRONTEND_URL?.replace(/\/$/, ''); // Remove trailing slash
+const frontendUrl = process.env.FRONTEND_URL?.replace(/\/$/, '') || '';
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   frontendUrl,
-].filter(Boolean);
+].filter((origin): origin is string => {
+  // Validate origin format
+  return !!origin && (origin.startsWith('http://') || origin.startsWith('https://'));
+});
 
 // Debug logs
 console.log('FRONTEND_URL:', process.env.FRONTEND_URL);
@@ -65,10 +65,9 @@ app.use(
         return callback(null, true);
       }
 
-      // Remove trailing slash from origin for comparison
+      // Normalize and check against allowed origins
       const normalizedOrigin = _origin.replace(/\/$/, '');
 
-      // Allow configured frontend
       if (allowedOrigins.includes(normalizedOrigin) || allowedOrigins.includes(_origin)) {
         return callback(null, true);
       }
@@ -82,17 +81,24 @@ app.use(
   })
 );
 
+// Initialize WebSocket with error handling
+try {
+  socketManager.initialize(httpServer);
+} catch (error) {
+  console.error('⚠️ WebSocket initialization failed:', error);
+}
+
 // API Routes
 app.use('/api/algorithms', algorithmRoutes);
 app.use('/api/execute', executionRoutes);
-app.use('/api/comprehensive', comprehensiveExecutionRoutes); // Changed from /api/execute to avoid conflicts
+app.use('/api/comprehensive', comprehensiveExecutionRoutes);
 app.use('/api/visualize', visualizationRoutes);
 app.use('/api/playground', playgroundRoutes);
 app.use('/api/auth', authRoutes);
 
 // Health check endpoint
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', message: 'Server is running' });
+  res.json({ status: 'ok', message: 'Server is running', timestamp: new Date().toISOString() });
 });
 
 // Error handling middleware
