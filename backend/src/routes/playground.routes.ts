@@ -4,9 +4,9 @@ import { playgroundService } from '../services/playground.service';
 const router = Router();
 
 // Execute code
-router.post('/execute', async (req: Request, res: Response): Promise<void> => {
+router.post('/execute', async (_req: Request, res: Response): Promise<void> => {
   try {
-    const { code, language, input } = req.body;
+    const { code, language, input } = _req.body;
 
     if (!code || !language) {
       res.status(400).json({ error: 'Code and language are required' });
@@ -26,9 +26,9 @@ router.post('/execute', async (req: Request, res: Response): Promise<void> => {
 });
 
 // Fix code with AI
-router.post('/fix', async (req: Request, res: Response): Promise<void> => {
+router.post('/fix', async (_req: Request, res: Response): Promise<void> => {
   try {
-    const { code, language, error } = req.body;
+    const { code, language, error } = _req.body;
 
     if (!code || !language) {
       res.status(400).json({ error: 'Code and language are required' });
@@ -48,9 +48,9 @@ router.post('/fix', async (req: Request, res: Response): Promise<void> => {
 });
 
 // Analyze code
-router.post('/analyze', async (req: Request, res: Response): Promise<void> => {
+router.post('/analyze', async (_req: Request, res: Response): Promise<void> => {
   try {
-    const { code, language } = req.body;
+    const { code, language } = _req.body;
 
     if (!code || !language) {
       res.status(400).json({ error: 'Code and language are required' });

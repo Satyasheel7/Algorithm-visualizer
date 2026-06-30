@@ -14,9 +14,17 @@ class SocketManager {
   private rooms: Map<string, VisualizationRoom> = new Map();
 
   initialize(server: HTTPServer) {
+    // Normalize FRONTEND_URL and build allowed origins
+    const frontendUrl = process.env.FRONTEND_URL?.replace(/\/$/, '') || 'http://localhost:5173';
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://localhost:3000',
+      frontendUrl,
+    ].filter(Boolean) as string[];
+
     this.io = new SocketIOServer(server, {
       cors: {
-        origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+        origin: allowedOrigins,
         methods: ['GET', 'POST'],
         credentials: true,
       },
